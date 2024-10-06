@@ -1,0 +1,23 @@
+{
+	"name": "micro",
+	"version": "1.0.0",
+	"description": "",
+	"keywords": [
+		"evacuate"
+	],
+	"homepage": "https://github.com/evacuate/micro#readme",
+	"bugs": {
+		"url": "https://github.com/evacuate/micro/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/evacuate/micro.git"
+	},
+	"license": "MIT",
+	"author": "evacuate",
+	"type": "module",
+	"main": "index.js",
+	"engines": {
+		"node": "20.17.0"
+	}
+}
