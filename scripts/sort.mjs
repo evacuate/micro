@@ -52,17 +52,20 @@ fs.readFile(packageJsonPath, "utf8", (err, data) => {
         ...publicKeys.sort(),
         ...privateKeys.sort(),
       ];
-      sortedKeys.forEach((key) => {
+      for (const key of sortedKeys) {
         if (key === "devDependencies" || key === "dependencies") {
           sortedObj[key] = customSortDependencies(obj[key]);
         } else {
           sortedObj[key] = sortObjectKeys(obj[key], sortOrder);
         }
-      });
+      }
       return sortedObj;
-    } else if (Array.isArray(obj)) {
+    }
+
+    if (Array.isArray(obj)) {
       return obj.map((item) => sortObjectKeys(item, sortOrder));
     }
+
     return obj;
   }
 
@@ -181,7 +184,7 @@ fs.readFile(packageJsonPath, "utf8", (err, data) => {
   // Write sorted content with a trailing newline
   fs.writeFile(
     packageJsonPath,
-    JSON.stringify(sortedPackageJson, null, 2) + "\n", // Add a newline at the end
+    `${JSON.stringify(sortedPackageJson, null, 2)}\n`, // Add a newline at the end
     (writeErr) => {
       if (writeErr) {
         console.error("Error writing package.json:", writeErr);
