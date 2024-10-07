@@ -1,29 +1,30 @@
 {
-	"name": "micro",
-	"version": "1.0.0",
-	"description": "",
-	"keywords": [
-		"evacuate"
-	],
-	"homepage": "https://github.com/evacuate/micro#readme",
-	"bugs": {
-		"url": "https://github.com/evacuate/micro/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/evacuate/micro.git"
-	},
-	"license": "MIT",
-	"author": "evacuate",
-	"type": "module",
-	"main": "index.js",
-  "scripts": {
-    "build": "node ./scripts/rm.mjs dist && node scripts/build.mjs"
+  "name": "micro",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "evacuate"
+  ],
+  "homepage": "https://github.com/evacuate/micro#readme",
+  "bugs": {
+    "url": "https://github.com/evacuate/micro/issues"
   },
-	"devDependencies": {
-		"esbuild": "^0.24.0"
-	},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evacuate/micro.git"
+  },
+  "license": "MIT",
+  "author": "evacuate",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "node scripts/rm.mjs dist && node scripts/build.mjs",
+    "sort": "node scripts/sort.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
   "engines": {
-		"node": "20.17.0"
-	}
+    "node": "20.17.0"
+  }
 }
