@@ -19,11 +19,14 @@
     "build": "node scripts/rm.mjs dist && node scripts/build.mjs",
     "check": "biome check ./src",
     "check:write": "biome check --write ./src",
+    "dev": "tsx src/index.ts",
     "format": "biome format .",
     "format:write": "biome format --write ./src",
     "lint": "biome lint ./src",
-    "sort": "node scripts/sort.mjs",
-    "dev": "tsx src/index.ts"
+    "sort": "node scripts/sort.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.3",
@@ -35,8 +38,5 @@
   },
   "engines": {
     "node": "20.18.0"
-  },
-  "dependencies": {
-    "ws": "^8.18.0"
   }
 }
