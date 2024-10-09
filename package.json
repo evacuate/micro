@@ -2,9 +2,7 @@
   "name": "micro",
   "version": "1.0.0",
   "description": "",
-  "keywords": [
-    "evacuate"
-  ],
+  "keywords": ["evacuate"],
   "homepage": "https://github.com/evacuate/micro#readme",
   "bugs": {
     "url": "https://github.com/evacuate/micro/issues"
@@ -25,7 +23,11 @@
     "format": "biome format .",
     "format:write": "biome format --write ./src",
     "lint": "biome lint ./src",
-    "sort": "node scripts/sort.mjs"
+    "sort": "node scripts/sort.mjs",
+    "start": "node dist/index.cjs",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "ws": "^8.18.0"
