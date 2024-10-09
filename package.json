@@ -22,13 +22,21 @@
     "format": "biome format .",
     "format:write": "biome format --write ./src",
     "lint": "biome lint ./src",
-    "sort": "node scripts/sort.mjs"
+    "sort": "node scripts/sort.mjs",
+    "dev": "tsx src/index.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.3",
-    "esbuild": "^0.24.0"
+    "@types/node": "^22.7.5",
+    "@types/ws": "^8.5.12",
+    "dotenv": "^16.4.5",
+    "esbuild": "^0.24.0",
+    "tsx": "^4.19.1"
   },
   "engines": {
     "node": "20.18.0"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
   }
 }
