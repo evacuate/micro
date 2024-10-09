@@ -1,6 +1,6 @@
-import type { Body } from './create';
 import https from 'node:https';
 import env from '../env';
+import type { Body } from './create';
 
 export default async function sendMessage(body: Body): Promise<void> {
   if (env.DISCORD_WEBHOOK_URL !== undefined) {
