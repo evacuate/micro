@@ -76,6 +76,7 @@ fs.readFile(packageJsonPath, "utf8", (err, data) => {
     "version",
     "private",
     "description",
+    "packageManager",
     "categories",
     "keywords",
     "homepage",
