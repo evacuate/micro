@@ -26,7 +26,7 @@ test('message', async ({ expect }) => {
 
     // Expected Messages
     const expectedMessage =
-      '{"title":"Earthquake Information","description":"Maximum intensity 3 was received at 14:18:0 on 2024/7/10.","fields":[{"name":"Seismic Intensity 1","value":"Fukuoka, Nagasaki, Miyazaki","inline":true},{"name":"Seismic Intensity 3","value":"Kumamoto","inline":true}],"color":2264063}';
+      '{"title":"Earthquake Information","description":"Maximum intensity 3 was received at 14:18:00 on 2024/08/10.","fields":[{"name":"Seismic Intensity 1","value":"Fukuoka, Nagasaki, Miyazaki","inline":true},{"name":"Seismic Intensity 3","value":"Kumamoto","inline":true}],"color":2264063}';
 
     expect(messageText).toBe(expectedMessage);
   }
@@ -46,7 +46,7 @@ test('message 1', async ({ expect }) => {
 
     // Expected Messages
     const expectedMessage =
-      '{"title":"Earthquake Information","description":"Maximum intensity 3 was received at 12:29:0 on 2024/7/10.","fields":[{"name":"Seismic Intensity 1","value":"Akita, Yamagata","inline":true},{"name":"Seismic Intensity 2","value":"Miyagi","inline":true},{"name":"Seismic Intensity 3","value":"Hokkaido, Aomori, Iwate","inline":true}],"color":2264063}';
+      '{"title":"Earthquake Information","description":"Maximum intensity 3 was received at 12:29:00 on 2024/08/10.","fields":[{"name":"Seismic Intensity 1","value":"Akita, Yamagata","inline":true},{"name":"Seismic Intensity 2","value":"Miyagi","inline":true},{"name":"Seismic Intensity 3","value":"Hokkaido, Aomori, Iwate","inline":true}],"color":2264063}';
 
     expect(messageText).toBe(expectedMessage);
   }
