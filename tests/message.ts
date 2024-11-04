@@ -1,11 +1,11 @@
 import { test } from 'vitest';
 
 // Import Helper Functions
-import parsePoints from '../src/parsers/points';
-import parseScale from '../src/parsers/scale';
+import parsePoints from '~/parsers/points';
+import parseScale from '~/parsers/scale';
 
 // Import Message Functions
-import { createEarthquakeMessage } from '../src/messages/create';
+import { createEarthquakeMessage } from '~/messages/create';
 
 // Import Example Data
 import { message } from './example';
