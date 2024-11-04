@@ -1,8 +1,8 @@
 import parsePoints from '~/parsers/points';
 import parseScale from '~/parsers/scale';
 import type { JMAQuake } from '~/types';
-import { createEarthquakeMessage } from './create';
-import sendMessage from './send';
+import { createEarthquakeMessage } from '~/messages/create';
+import sendMessage from '~/messages/send';
 
 export async function handleEarthquake(
   earthquakeData: JMAQuake,

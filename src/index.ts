@@ -1,8 +1,8 @@
 import WebSocket from 'ws';
-import env from './env';
+import env from '~/env';
 
-import { handleEarthquake } from './messages/handle';
-import type { JMAQuake, JMATsunami } from './types';
+import { handleEarthquake } from '~/messages/handle';
+import type { JMAQuake, JMATsunami } from '~/types';
 
 const NODE_ENV: 'development' | 'production' = env.NODE_ENV ?? 'development';
 const isDev: boolean = NODE_ENV === 'development';
