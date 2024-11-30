@@ -19,14 +19,18 @@ export default async function sendMessage(body: Body): Promise<void> {
 
       // Create a request
       const req = https.request(options, (res) => {
-        let data = '';
+        if (res.statusCode !== undefined && res.statusCode >= 400) {
+          console.error(`Webhook error: ${res.statusCode}`);
+          return;
+        }
 
+        let data = '';
         res.on('data', (chunk) => {
           data += chunk;
         });
 
         res.on('end', () => {
-          console.info(`Webhook status code: ${res.statusCode}`);
+          console.info(`Webhook success: ${res.statusCode}`);
         });
       });
 
