@@ -15,6 +15,7 @@ export default async function sendMessage(body: Body): Promise<void> {
         headers: {
           'Content-Type': 'application/json',
         },
+        timeout: 10000,
       };
 
       // Create a request
