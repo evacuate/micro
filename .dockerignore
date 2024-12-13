@@ -1,10 +1,27 @@
+# Dependencies
 node_modules
-*.log
+.npmrc
+.nvmrc
+
+# Version Control
 .git
 .github
+.gitignore
+
+# Development Tools
 .vscode
+.editorconfig
+biome.json
+vitest.config.mts
+
+# Build and Output
 dist
+
+# Documentation and Tests
 tests
 docs
 *.md
+
+# Logs and Environment
+*.log
 .env*
