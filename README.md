@@ -37,11 +37,13 @@
 
 ### Configuration
 
-Create a `.env` file in the root directory and add your credentials:
+1. Copy the example configuration file:
 
-```
-DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
-```
+    ```bash
+    cp .env.example .env
+    ```
+
+2. Edit the `.env` file
 
 ### Scripts
 
