@@ -1,20 +1,17 @@
-# Use an official Node.js runtime as a parent image
-FROM node:20
-
-# Set the working directory to /app
+# Build stage
+FROM node:20-slim AS builder
 WORKDIR /app
-
-# Copy package.json and package-lock.json to the container
 COPY package*.json ./
-
-# Install app dependencies
-RUN yarn install
-
-# Copy the rest of the application code to the container
+RUN yarn install --production=false
 COPY . .
-
-# Building the app
 RUN yarn build
 
-# Start the app
+# Production stage
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+RUN yarn install --production=true && yarn cache clean
+
+# Run the app
 CMD ["yarn", "start"]
