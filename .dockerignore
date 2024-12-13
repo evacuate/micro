@@ -1,2 +1,10 @@
 node_modules
 *.log
+.git
+.github
+.vscode
+dist
+tests
+docs
+*.md
+.env*
