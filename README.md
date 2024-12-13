@@ -59,28 +59,10 @@
   yarn run dev
   ```
 
-- **Format Code**: Format code
-
-  ```bash
-  yarn run format
-  ```
-
 - **Lint Code**: Lint code
 
   ```bash
   yarn run lint
-  ```
-
-- **Start**: Run the application using compiled JavaScript
-
-  ```bash
-  yarn run start
-  ```
-
-- **Typecheck**: Check TypeScript types
-
-  ```bash
-  yarn run typecheck
   ```
 
 ### Usage
