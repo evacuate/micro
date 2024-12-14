@@ -3,54 +3,73 @@ import env from '~/env';
 import type { Body } from '~/messages/create';
 
 export default async function sendMessage(body: Body): Promise<void> {
-  if (env.DISCORD_WEBHOOK_URL !== undefined) {
-    try {
-      const url = new URL(env.DISCORD_WEBHOOK_URL);
+  // Check if the webhook URL is set
+  if (env.DISCORD_WEBHOOK_URL === undefined) return;
 
-      // Setting options for POST data
-      const options = {
-        hostname: url.hostname,
-        path: url.pathname,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000,
-      };
+  const targetPrefectures = env.TARGET_PREFECTURES?.split(',') ?? [];
+  if (targetPrefectures.length > 0) {
+    // Extract prefectures from fields in body
+    const affectedPrefectures = body.fields.flatMap((field) =>
+      field.value.split(', '),
+    );
 
-      // Create a request
-      const req = https.request(options, (res) => {
-        if (res.statusCode !== undefined && res.statusCode >= 400) {
-          console.error(`Webhook error: ${res.statusCode}`);
-          return;
-        }
+    // Check if the target prefecture is included
+    const shouldSend = targetPrefectures.some((target) =>
+      affectedPrefectures.includes(target),
+    );
 
-        let data = '';
-        res.on('data', (chunk) => {
-          data += chunk;
-        });
-
-        res.on('end', () => {
-          console.info(`Webhook success: ${res.statusCode}`);
-        });
-      });
-
-      req.on('error', (e) => {
-        console.error(`Error during webhook message send: ${e.message}`);
-      });
-
-      // Data to be sent to Webhook
-      const payload = JSON.stringify({
-        embeds: [body],
-      });
-
-      // Write data to request
-      req.write(payload);
-      req.end();
-
-      console.info('Message successfully sent to webhook');
-    } catch (webhookError) {
-      console.error('Error during webhook message send:', webhookError);
+    if (!shouldSend) {
+      console.info('No target prefectures affected, skipping webhook');
+      return;
     }
+  }
+
+  try {
+    const url = new URL(env.DISCORD_WEBHOOK_URL);
+
+    // Setting options for POST data
+    const options = {
+      hostname: url.hostname,
+      path: url.pathname,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 10000,
+    };
+
+    // Create a request
+    const req = https.request(options, (res) => {
+      if (res.statusCode !== undefined && res.statusCode >= 400) {
+        console.error(`Webhook error: ${res.statusCode}`);
+        return;
+      }
+
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        console.info(`Webhook success: ${res.statusCode}`);
+      });
+    });
+
+    req.on('error', (e) => {
+      console.error(`Error during webhook message send: ${e.message}`);
+    });
+
+    // Data to be sent to Webhook
+    const payload = JSON.stringify({
+      embeds: [body],
+    });
+
+    // Write data to request
+    req.write(payload);
+    req.end();
+
+    console.info('Message successfully sent to webhook');
+  } catch (webhookError) {
+    console.error('Error during webhook message send:', webhookError);
   }
 }
