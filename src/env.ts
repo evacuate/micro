@@ -4,13 +4,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 interface Env {
-  NODE_ENV?: 'development' | 'production';
+  NODE_ENV?: string;
   DISCORD_WEBHOOK_URL?: string;
   TARGET_PREFECTURES?: string;
 }
 
 const env: Env = {
-  NODE_ENV: process.env.NODE_ENV as 'development' | 'production',
+  NODE_ENV: process.env.NODE_ENV,
   DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL,
   TARGET_PREFECTURES: process.env.TARGET_PREFECTURES,
 };

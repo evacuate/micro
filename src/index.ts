@@ -4,7 +4,7 @@ import env from '~/env';
 import { handleEarthquake } from '~/messages/handle';
 import type { JMAQuake, JMATsunami } from '~/types';
 
-const NODE_ENV: 'development' | 'production' = env.NODE_ENV ?? 'development';
+const NODE_ENV = env.NODE_ENV ?? 'development';
 const isDev: boolean = NODE_ENV === 'development';
 
 const RECONNECT_DELAY: number = 5000; // 5 seconds
@@ -21,7 +21,9 @@ if (
 async function initWebSocket(): Promise<void> {
   try {
     if (isFirstRun) {
-      console.info(`Now running in ${NODE_ENV} mode.`);
+      console.info(
+        `Now running in ${isDev ? 'development' : 'production'} mode.`,
+      );
       isFirstRun = false; // Set the flag to false after the first run
     }
 
