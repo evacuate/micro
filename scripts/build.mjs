@@ -10,7 +10,6 @@ const options = {
   format: "cjs",
   bundle: true,
   minify: true,
-  external: ["newrelic"],
 };
 
 build(options).catch((err) => {
