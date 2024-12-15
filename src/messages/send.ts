@@ -61,6 +61,7 @@ export default async function sendMessage(body: Body): Promise<void> {
 
     // Data to be sent to Webhook
     const payload = JSON.stringify({
+      ...(env.DISCORD_MENTION_ENABLED && { content: '@everyone' }),
       embeds: [body],
     });
 
