@@ -10,11 +10,16 @@ const isDev: boolean = NODE_ENV === 'development';
 const RECONNECT_DELAY: number = 5000; // 5 seconds
 let isFirstRun = true; // Flag to check if it's the initial run
 
-if (
-  env.DISCORD_WEBHOOK_URL === undefined ||
-  !env.DISCORD_WEBHOOK_URL.startsWith('https://discord.com/api/webhooks/')
-) {
-  console.error('DISCORD_WEBHOOK_URL is not set or invalid.');
+if (env.DISCORD_WEBHOOK_URL !== undefined) {
+  const webhookUrls = env.DISCORD_WEBHOOK_URL.split(',');
+  for (const url of webhookUrls) {
+    if (!String(url).startsWith('https://discord.com/api/webhooks/')) {
+      console.error('DISCORD_WEBHOOK_URL is not set or invalid.');
+      process.exit(1);
+    }
+  }
+} else {
+  console.error('DISCORD_WEBHOOK_URL is not set.');
   process.exit(1);
 }
 

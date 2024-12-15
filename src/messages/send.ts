@@ -24,13 +24,20 @@ export default async function sendMessage(body: Body): Promise<void> {
     }
   }
 
+  const webhookUrls = env.DISCORD_WEBHOOK_URL.split(',');
+  for (const url of webhookUrls) {
+    await sendWebhook(body, url);
+  }
+}
+
+async function sendWebhook(body: Body, url: string): Promise<void> {
   try {
-    const url = new URL(env.DISCORD_WEBHOOK_URL);
+    const newUrl = new URL(url);
 
     // Setting options for POST data
     const options = {
-      hostname: url.hostname,
-      path: url.pathname,
+      hostname: newUrl.hostname,
+      path: newUrl.pathname,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
