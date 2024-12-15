@@ -25,59 +25,79 @@ export default async function sendMessage(body: Body): Promise<void> {
   }
 
   const webhookUrls = env.DISCORD_WEBHOOK_URL.split(',');
+  let successCount = 0;
+
   for (const url of webhookUrls) {
-    await sendWebhook(body, url);
+    const success = await sendWebhook(body, url);
+    if (success) {
+      successCount++;
+    } else {
+      console.error(`Failed to send webhook: ${url}`);
+    }
   }
+
+  // Log the number of successful webhooks
+  console.info(`Webhook sent (${successCount}/${webhookUrls.length})`);
 }
 
-async function sendWebhook(body: Body, url: string): Promise<void> {
-  try {
-    const newUrl = new URL(url);
+async function sendWebhook(body: Body, url: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    try {
+      const newUrl = new URL(url);
 
-    // Setting options for POST data
-    const options = {
-      hostname: newUrl.hostname,
-      path: newUrl.pathname,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      timeout: 10000,
-    };
+      // Setting options for POST data
+      const options = {
+        hostname: newUrl.hostname,
+        path: newUrl.pathname,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+      };
 
-    // Create a request
-    const req = https.request(options, (res) => {
-      if (res.statusCode !== undefined && res.statusCode >= 400) {
-        console.error(`Webhook error: ${res.statusCode}`);
-        return;
+      // Create a request
+      const req = https.request(options, (res) => {
+        if (res.statusCode !== undefined && res.statusCode >= 400) {
+          console.error(`Webhook error: ${res.statusCode}`);
+          resolve(false);
+          return;
+        }
+
+        let data = '';
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        res.on('end', () => {
+          resolve(true);
+        });
+      });
+
+      req.on('error', (e) => {
+        console.error(`Error during webhook message send: ${e.message}`);
+        req.destroy();
+        resolve(false);
+      });
+
+      // Data to be sent to Webhook
+      const payload = JSON.stringify({
+        ...(env.DISCORD_MENTION_ENABLED && { content: '@everyone' }),
+        embeds: [body],
+      });
+
+      // Write data to request
+      try {
+        req.write(payload);
+        req.end();
+      } catch (writeError) {
+        console.error('Error writing to request:', writeError);
+        req.destroy();
+        resolve(false);
       }
-
-      let data = '';
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-
-      res.on('end', () => {
-        console.info(`Webhook success: ${res.statusCode}`);
-      });
-    });
-
-    req.on('error', (e) => {
-      console.error(`Error during webhook message send: ${e.message}`);
-    });
-
-    // Data to be sent to Webhook
-    const payload = JSON.stringify({
-      ...(env.DISCORD_MENTION_ENABLED && { content: '@everyone' }),
-      embeds: [body],
-    });
-
-    // Write data to request
-    req.write(payload);
-    req.end();
-
-    console.info('Message successfully sent to webhook');
-  } catch (webhookError) {
-    console.error('Error during webhook message send:', webhookError);
-  }
+    } catch (webhookError) {
+      console.error('Error during webhook message send:', webhookError);
+      resolve(false);
+    }
+  });
 }
