@@ -32,7 +32,7 @@ export default async function sendMessage(body: Body): Promise<void> {
     if (success) {
       successCount++;
     } else {
-      console.error(`Failed to send webhook to ${url}`);
+      console.error(`Failed to send webhook: ${url}`);
     }
   }
 
