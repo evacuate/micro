@@ -76,6 +76,7 @@ async function sendWebhook(body: Body, url: string): Promise<boolean> {
 
       req.on('error', (e) => {
         console.error(`Error during webhook message send: ${e.message}`);
+        req.destroy();
         resolve(false);
       });
 
