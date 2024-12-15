@@ -87,8 +87,14 @@ async function sendWebhook(body: Body, url: string): Promise<boolean> {
       });
 
       // Write data to request
-      req.write(payload);
-      req.end();
+      try {
+        req.write(payload);
+        req.end();
+      } catch (writeError) {
+        console.error('Error writing to request:', writeError);
+        req.destroy();
+        resolve(false);
+      }
     } catch (webhookError) {
       console.error('Error during webhook message send:', webhookError);
       resolve(false);
