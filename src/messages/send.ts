@@ -19,7 +19,9 @@ export default async function sendMessage(body: Body): Promise<void> {
     );
 
     if (!shouldSend) {
-      console.info('No target prefectures affected, skipping webhook');
+      if (env.ENABLE_LOGGER) {
+        console.info('No target prefectures affected, skipping webhook');
+      }
       return;
     }
   }
@@ -36,8 +38,10 @@ export default async function sendMessage(body: Body): Promise<void> {
     }
   }
 
-  // Log the number of successful webhooks
-  console.info(`Webhook sent (${successCount}/${webhookUrls.length})`);
+  if (env.ENABLE_LOGGER) {
+    // Log the number of successful webhooks
+    console.info(`Webhook sent (${successCount}/${webhookUrls.length})`);
+  }
 }
 
 async function sendWebhook(body: Body, url: string): Promise<boolean> {

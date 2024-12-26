@@ -3,6 +3,7 @@ import sendMessage from '~/messages/send';
 import parsePoints from '~/parsers/points';
 import parseScale from '~/parsers/scale';
 import type { JMAQuake } from '~/types';
+import env from '~/env';
 
 export async function handleEarthquake(
   earthquakeData: JMAQuake,
@@ -17,7 +18,9 @@ export async function handleEarthquake(
   if (scale !== undefined) {
     const body = createEarthquakeMessage(time, scale, points, isDev);
     await sendMessage(body);
-    console.info('Earthquake alert received and posted successfully.');
+    if (env.ENABLE_LOGGER) {
+      console.info('Earthquake alert received and posted successfully.');
+    }
   } else {
     console.warn('Earthquake scale is undefined.');
   }
