@@ -13,6 +13,7 @@ node_modules
 .editorconfig
 biome.json
 vitest.config.mts
+.devcontainer
 
 # Build and Output
 dist
