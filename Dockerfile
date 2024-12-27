@@ -1,17 +1,20 @@
 # Build stage
 FROM node:20-slim AS builder
 WORKDIR /app
-COPY package*.json ./
-RUN yarn install --production=false
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN pnpm install
 COPY . .
-RUN yarn build
+RUN pnpm run build
 
 # Production stage
 FROM node:20-alpine
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
-RUN yarn install --production=true && yarn cache clean
+COPY --from=builder /app/pnpm-lock.yaml ./
+RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN pnpm install --prod --frozen-lockfile && pnpm store prune
 
 # Run the app
-CMD ["yarn", "start"]
+CMD ["pnpm", "start"]

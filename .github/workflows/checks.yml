@@ -22,11 +22,16 @@ jobs:
         with:
           node-version: "20.18.x"
 
+      - name: Set Up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Run Biome
-        run: npm run lint
+        run: pnpm lint
 
   test:
     name: Test
@@ -44,11 +49,16 @@ jobs:
         with:
           node-version: "20.18.x"
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Set Up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
 
-      - name: Run Biome
-        run: npm run test
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Run Tests
+        run: pnpm test
 
   scan:
     name: Scan
