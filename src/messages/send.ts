@@ -29,14 +29,17 @@ export default async function sendMessage(body: Body): Promise<void> {
   const webhookUrls = env.DISCORD_WEBHOOK_URL.split(',');
   let successCount = 0;
 
-  for (const url of webhookUrls) {
-    const success = await sendWebhook(body, url);
-    if (success) {
-      successCount++;
-    } else {
-      console.error(`Failed to send webhook: ${url}`);
-    }
-  }
+  const results = await Promise.all(
+    webhookUrls.map(async (url) => {
+      const success = await sendWebhook(body, url);
+      if (!success) {
+        console.error(`Failed to send webhook: ${url}`);
+      }
+      return success;
+    }),
+  );
+
+  successCount = results.filter(Boolean).length;
 
   if (env.ENABLE_LOGGER) {
     // Log the number of successful webhooks
