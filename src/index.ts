@@ -65,20 +65,24 @@ void (async () => {
 })();
 
 async function onMessage(message: WebSocket.Data): Promise<void> {
-  if (isDev) console.debug('Message received from server.');
-  const earthQuakeData = JSON.parse(message.toString() as string) as
-    | JMAQuake
-    | JMATsunami;
+  try {
+    if (isDev) console.debug('Message received from server.');
+    const earthQuakeData = JSON.parse(message.toString() as string) as
+      | JMAQuake
+      | JMATsunami;
 
-  if (earthQuakeData.code === 551) {
-    handleEarthquake(earthQuakeData as JMAQuake, isDev);
-  } else {
-    if (isDev) {
-      console.warn(
-        'Unknown message code: ',
-        (earthQuakeData as JMAQuake | JMATsunami).code,
-      );
+    if (earthQuakeData.code === 551) {
+      await handleEarthquake(earthQuakeData as JMAQuake, isDev);
+    } else {
+      if (isDev) {
+        console.warn(
+          'Unknown message code: ',
+          (earthQuakeData as JMAQuake | JMATsunami).code,
+        );
+      }
     }
+  } catch (error) {
+    console.error('Error processing message:', error);
   }
 }
 
