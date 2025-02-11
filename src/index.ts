@@ -7,7 +7,10 @@ import type { JMAQuake, JMATsunami } from '~/types';
 const NODE_ENV = env.NODE_ENV ?? 'development';
 const isDev: boolean = NODE_ENV === 'development';
 
-const RECONNECT_DELAY: number = 5000; // 5 seconds
+let reconnectAttempts = 0;
+const BASE_RECONNECT_DELAY = 5000; // 5 seconds
+const MAX_RECONNECT_DELAY = 30000; // Maximum 30 seconds
+
 let isFirstRun = true; // Flag to check if it's the initial run
 
 if (env.DISCORD_WEBHOOK_URL !== undefined) {
@@ -96,13 +99,23 @@ async function onClose(code: number, reason: string): Promise<void> {
     reason: reason.toString(),
   });
 
-  // Attempt to reconnect after a delay
+  // Calculate the waiting time by exponential backoff
+  const delay = Math.min(
+    BASE_RECONNECT_DELAY * Math.pow(2, reconnectAttempts),
+    MAX_RECONNECT_DELAY,
+  );
+  console.info(`Reconnecting in ${delay} ms...`);
+
   setTimeout(() => {
+    reconnectAttempts++; // Increment the number of reconnection attempts
     console.info('Attempting to reconnect...');
     void initWebSocket();
-  }, RECONNECT_DELAY);
+  }, delay);
 }
 
 async function onOpen(): Promise<void> {
   console.info('WebSocket connection opened.');
+
+  // Reset the number of reconnection attempts on successful connection
+  reconnectAttempts = 0;
 }
