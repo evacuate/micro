@@ -20,13 +20,16 @@ export function createEarthquakeMessage(
   const formattedDate = `${newTime.getFullYear()}/${String(newTime.getMonth() + 1).padStart(2, '0')}/${String(newTime.getDate()).padStart(2, '0')}`;
 
   const descriptionPrefix = isDev
-    ? `${translate('message', MessageKey.TEST_DISTRIBUTION, env.LANGUAGE)}`
+    ? `${translate('message', MessageKey.TEST_DISTRIBUTION, env.LANGUAGE)}\n`
     : '';
 
   const body = {
     title: translate('message', MessageKey.EARTHQUAKE_INFO, env.LANGUAGE),
-    description: `${descriptionPrefix}
-    ${translate('message', MessageKey.MAX_INTENSITY_RECEIVED, env.LANGUAGE)
+    description: `${descriptionPrefix}${translate(
+      'message',
+      MessageKey.MAX_INTENSITY_RECEIVED,
+      env.LANGUAGE,
+    )
       .replace('{scale}', scale)
       .replace('{time}', formattedTime)
       .replace('{date}', formattedDate)}`,
