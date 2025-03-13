@@ -1,3 +1,7 @@
+import translate from '~/translate';
+import { MessageKey } from '~/types/translate';
+import env from '~/env';
+
 export interface Body {
   title: string;
   description: string;
@@ -16,14 +20,18 @@ export function createEarthquakeMessage(
   const formattedDate = `${newTime.getFullYear()}/${String(newTime.getMonth() + 1).padStart(2, '0')}/${String(newTime.getDate()).padStart(2, '0')}`;
 
   const descriptionPrefix = isDev
-    ? 'This information is a test distribution\n'
+    ? `${translate('message', MessageKey.TEST_DISTRIBUTION, env.LANGUAGE)}`
     : '';
 
   const body = {
-    title: 'Earthquake Information',
-    description: `${descriptionPrefix}Maximum intensity ${scale} was received at ${formattedTime} on ${formattedDate}.`,
+    title: translate('message', MessageKey.EARTHQUAKE_INFO, env.LANGUAGE),
+    description: `${descriptionPrefix}
+    ${translate('message', MessageKey.MAX_INTENSITY_RECEIVED, env.LANGUAGE)
+      .replace('{scale}', scale)
+      .replace('{time}', formattedTime)
+      .replace('{date}', formattedDate)}`,
     fields: points.map(([scale, regions]) => ({
-      name: `Seismic Intensity ${scale}`,
+      name: `${translate('message', MessageKey.SEISMIC_INTENSITY, env.LANGUAGE)} ${scale}`,
       value: Array.from(regions).join(', '),
       inline: true,
     })),

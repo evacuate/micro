@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { Language } from './types/translate';
 
 // Load environment variables
 dotenv.config();
@@ -9,6 +10,7 @@ interface Env {
   DISCORD_MENTION_ENABLED: boolean;
   TARGET_PREFECTURES?: string;
   ENABLE_LOGGER: boolean;
+  LANGUAGE: Language;
 }
 
 const env: Env = {
@@ -19,6 +21,7 @@ const env: Env = {
   ENABLE_LOGGER: process.env.ENABLE_LOGGER
     ? process.env.ENABLE_LOGGER === 'true'
     : true,
+  LANGUAGE: (process.env.LANGUAGE as Language) || ('en' as Language),
 };
 
 export default env;
